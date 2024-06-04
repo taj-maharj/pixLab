@@ -53,6 +53,20 @@ public class Stenanography {
         return copy;
     }
 
+    public static boolean canHide(Picture src, Picture secret){
+        return (src.getWidth() == secret.getWidth()) && (src.getHeight() == secret.getHeight());
+    }
+
+    public static Picture hidePicture(Picture src, Picture secret){
+        //Lowest 2 bits of src should be switched to highest 2 bits of secret
+        Pixel[][] p = src.getPixels2D();
+        for (int r = 0; r<src.getHeight(); r++) {
+            for (int c = 0; c<src.getWidth(); c++) {
+                p[r][c] = p[r][c].setColor(new Color());
+            }
+        }
+    }
+
     public static void main(String[] args) {
         // Picture beach = new Picture("beach.jpg");
         // beach.explore();
@@ -65,5 +79,7 @@ public class Stenanography {
         copy2.explore();
         Picture copy3 = revealPicture(copy2);
         copy3.explore();
+
+        System.out.println(canHide(copy2, copy3));
     }
 }
