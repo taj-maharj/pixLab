@@ -19,9 +19,9 @@ public class Stenanography {
         int r = p.getRed();
         int g = p.getGreen();
         int b = p.getBlue();
-        r = r*4/4+r/64>255 ?255 : r*4/4+r/64;
-        g = g*4/4+g/64>255 ?255 : g*4/4+g/64;
-        b = b*4/4+b/64>255 ?255 : b*4/4+b/64;;
+        r = r/4*4+c.getRed()/64; 
+        g = g/4*4+c.getGreen()/64; 
+        b = b/4*4+c.getBlue()/64;
 
         p.setColor(new Color(r, g, b));
     }
@@ -36,6 +36,23 @@ public class Stenanography {
         return pic;
     }
 
+    public static Picture revealPicture(Picture hidden){
+        Picture copy = new Picture(hidden);
+        Pixel[][] pixels = copy.getPixels2D();
+        Pixel[][] source = hidden.getPixels2D();
+        for(int r = 0; r<pixels.length; r++){
+            for(int c = 0; c<pixels[0].length; c++){
+                Color col = source[r][c].getColor();
+                int red = col.getRed()%4*64;
+                int green = col.getGreen()%4*64;
+                int blue = col.getBlue()%4*64;
+                pixels[r][c].setColor(new Color(red, green, blue));
+                // copy.getPixel(c, r).setColor(new Color(red, green, blue));
+            }
+        }
+        return copy;
+    }
+
     public static void main(String[] args) {
         // Picture beach = new Picture("beach.jpg");
         // beach.explore();
@@ -46,5 +63,7 @@ public class Stenanography {
         beach2.explore();
         Picture copy2 = testSetLow(beach2, Color.PINK);
         copy2.explore();
+        Picture copy3 = revealPicture(copy2);
+        copy3.explore();
     }
 }
