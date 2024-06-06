@@ -59,27 +59,53 @@ public class Stenanography {
 
     public static Picture hidePicture(Picture src, Picture secret){
         //Lowest 2 bits of src should be switched to highest 2 bits of secret
-        Pixel[][] p = src.getPixels2D();
+        Pixel[][] secretP = secret.getPixels2D();
+        Pixel[][] srcP = src.getPixels2D();
         for (int r = 0; r<src.getHeight(); r++) {
             for (int c = 0; c<src.getWidth(); c++) {
-                p[r][c] = p[r][c].setColor(new Color());
+                int red = srcP[r][c].getRed();
+                int green = srcP[r][c].getGreen();
+                int blue = srcP[r][c].getBlue();
+
+                int Sred = secretP[r][c].getRed();
+                int Sgreen = secretP[r][c].getGreen();
+                int Sblue = secretP[r][c].getBlue();
+
+
+                Pixel currPixel = srcP[r][c];
+                currPixel.setRed(red/4*4+Sred/64);
+                currPixel.setBlue(blue/4*4+Sblue/64);
+                currPixel.setGreen(green/4*4+Sgreen/64);
             }
         }
+        return src;
     }
 
     public static void main(String[] args) {
-        // Picture beach = new Picture("beach.jpg");
+        Picture beach = new Picture("beach.jpg");
+        Picture blueM = new Picture("blue-mark.jpg");
         // beach.explore();
         // Picture copy = testClearLow(beach);
         // copy.explore();
 
-        Picture beach2 = new Picture ("beach.jpg");
-        beach2.explore();
-        Picture copy2 = testSetLow(beach2, Color.PINK);
-        copy2.explore();
-        Picture copy3 = revealPicture(copy2);
-        copy3.explore();
+        // Picture beach2 = new Picture ("beach.jpg");
+        // beach2.explore();
+        // Picture copy2 = testSetLow(beach2, Color.PINK);
+        // copy2.explore();
+        // Picture copy3 = revealPicture(copy2);
+        // copy3.explore();
 
-        System.out.println(canHide(copy2, copy3));
+        if(canHide(beach,blueM)){
+            beach.explore();
+            blueM.explore();
+            
+            Picture secret = hidePicture(beach, blueM);
+
+            secret.explore();
+
+            secret = revealPicture(secret);
+            
+            secret.explore();
+        }
     }
 }

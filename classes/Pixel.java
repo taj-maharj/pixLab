@@ -43,6 +43,32 @@ public class Pixel
     this.y = y;
     
   }
+
+  public Pixel(DigitalPicture picture, int x, int y)
+  {
+    // set the picture
+    this.picture = picture;
+    
+    // set the x location
+    this.x = x;
+    
+    // set the y location
+    this.y = y;
+    
+  }
+
+  public Pixel(SimplePicture picture, int x, int y)
+  {
+    // set the picture
+    this.picture = picture;
+    
+    // set the x location
+    this.x = x;
+    
+    // set the y location
+    this.y = y;
+    
+  }
   
   ///////////////////////// methods //////////////////////////////
   
