@@ -81,9 +81,37 @@ public class Stenanography {
         return src;
     }
 
+    public static Picture hidePicture(Picture src, Picture secret, int startRow, int startColumn){
+        Pixel[][] secretP = secret.getPixels2D();
+        Pixel[][] srcP = src.getPixels2D();
+        int secretRow = 0;
+        for (int r = startRow; r<startRow+secret.getHeight(); r++) {
+            int secretCol = 0;
+            for (int c = startColumn; c<startColumn+secret.getWidth(); c++) {
+                int red = srcP[r][c].getRed();
+                int green = srcP[r][c].getGreen();
+                int blue = srcP[r][c].getBlue();
+
+
+                int Sred = secretP[secretRow][secretCol].getRed();
+                int Sgreen = secretP[secretRow][secretCol].getGreen();
+                int Sblue = secretP[secretRow][secretCol].getBlue();
+
+
+                Pixel currPixel = srcP[r][c];
+                currPixel.setRed(red/4*4+Sred/64);
+                currPixel.setBlue(blue/4*4+Sblue/64);
+                currPixel.setGreen(green/4*4+Sgreen/64);
+                secretCol++;
+            }
+            secretRow++;
+        }
+        return src;
+    }
+
     public static void main(String[] args) {
-        Picture beach = new Picture("beach.jpg");
-        Picture blueM = new Picture("blue-mark.jpg");
+        // Picture beach = new Picture("beach.jpg");
+        // Picture blueM = new Picture("blue-mark.jpg");
         // beach.explore();
         // Picture copy = testClearLow(beach);
         // copy.explore();
@@ -95,17 +123,30 @@ public class Stenanography {
         // Picture copy3 = revealPicture(copy2);
         // copy3.explore();
 
-        if(canHide(beach,blueM)){
-            beach.explore();
-            blueM.explore();
+        // if(canHide(beach,blueM)){
+        //     beach.explore();
+        //     blueM.explore();
             
-            Picture secret = hidePicture(beach, blueM);
+        //     Picture secret = hidePicture(beach, blueM);
 
-            secret.explore();
+        //     secret.explore();
 
-            secret = revealPicture(secret);
+        //     secret = revealPicture(secret);
             
-            secret.explore();
-        }
+        //     secret.explore();
+        // }
+
+        Picture beach = new Picture("beach.jpg");
+        Picture robot = new Picture("robot.jpg");
+        Picture flower = new Picture("flower1.jpg");
+        // beach.explore();
+
+        Picture hidden = hidePicture(beach, robot, 65, 208);
+        Picture otherHidden = hidePicture(hidden, flower, 28, 110);
+
+        // otherHidden.explore();
+
+        Picture unhidden = revealPicture(otherHidden);
+        unhidden.explore();
     }
 }
