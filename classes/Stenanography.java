@@ -54,7 +54,7 @@ public class Stenanography {
     }
 
     public static boolean canHide(Picture src, Picture secret){
-        return (src.getWidth() == secret.getWidth()) && (src.getHeight() == secret.getHeight());
+        return (src.getWidth() >= secret.getWidth()) && (src.getHeight() >= secret.getHeight());
     }
 
     public static Picture hidePicture(Picture src, Picture secret){
@@ -135,18 +135,21 @@ public class Stenanography {
             
         //     secret.explore();
         // }
-
+        
         Picture beach = new Picture("beach.jpg");
         Picture robot = new Picture("robot.jpg");
         Picture flower = new Picture("flower1.jpg");
         // beach.explore();
 
-        Picture hidden = hidePicture(beach, robot, 65, 208);
-        Picture otherHidden = hidePicture(hidden, flower, 28, 110);
+        if(canHide(beach, flower) && canHide(beach, robot)){
+            Picture hidden = hidePicture(beach, robot, 65, 208);
+            Picture otherHidden = hidePicture(hidden, flower, 28, 110);
 
-        // otherHidden.explore();
+            // otherHidden.explore();
 
-        Picture unhidden = revealPicture(otherHidden);
-        unhidden.explore();
+            Picture unhidden = revealPicture(otherHidden);
+            unhidden.explore();
+        }
+        
     }
 }
